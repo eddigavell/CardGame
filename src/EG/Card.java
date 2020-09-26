@@ -1,9 +1,9 @@
 package EG;
 
 class Card {
-    String deckNumber;
-    String suite;
-    String rankOfCard;
+    private String deckNumber;
+    private String suite;
+    private String rankOfCard;
 
     Card(String deckNumber, String suite, String rankOfCard) {
         this.deckNumber = deckNumber;
@@ -12,6 +12,14 @@ class Card {
     }
 
     String getName() {
-        return rankOfCard;
+        return this.rankOfCard;
+    }
+
+    String getSuite(){
+        return this.suite;
+    }
+
+    String getRankOfCard() {
+        return this.rankOfCard;
     }
 }
