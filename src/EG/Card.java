@@ -1,6 +1,6 @@
 package EG;
 
-class Card {
+abstract class  Card {
     private String deckNumber;
     private String suite;
     private String rankOfCard;
@@ -11,15 +11,24 @@ class Card {
         this.rankOfCard = rankOfCard;
     }
 
-    String getName() {
-        return this.rankOfCard;
+    protected String getDeckNumber() {
+        return this.deckNumber;
     }
 
-    String getSuite(){
+    protected String getSuite(){
         return this.suite;
     }
 
-    String getRankOfCard() {
+    protected String getRankOfCard() {
         return this.rankOfCard;
+    }
+
+    protected void printCard() {
+        System.out.println(getSuite() + " " + getRankOfCard());
+    }
+
+    void removeCardFromDeck() {
+        this.suite = null;
+        this.rankOfCard = null;
     }
 }
