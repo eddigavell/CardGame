@@ -8,12 +8,19 @@ class Game {
     private Diamonds[] cardsDiamonds;
     private Clubs[] cardsClubs;
     private Memory[] playedCards;
+    private int howManyCardsHaveBeenPlayed=0;
     Random rand = new Random();
 
-    Game(String numberOfDecks) {
-        playedCards = new Memory[14];
-        initiateNewDeck(numberOfDecks);
-        newHand();
+    Game() {
+        initiateNewDeck();
+
+        drawNewRound();
+        printCardsPlayedFromDeck();
+
+        shuffleDeck();
+
+        drawNewRound();
+        printCardsPlayedFromDeck();
     }
 
     /*
@@ -33,182 +40,254 @@ class Game {
         Array[12] = Ace
         Array[13] = Joker
      */
+    /*
+    String cardSuite = "random";
+        String cardValue = "random";
 
-    void newHand() {
-        newCardsOnTheTable();
-        newPlayerCards();
-        newComputerCards();
-    }
-
-    boolean checkPlayedCards(int suite, int value) {
-        boolean x;
+        //Check what suite and place the right suite in the string
         if (suite == 0) {
-            x = cardsHearts[value].checkIfCardIsPlayed();
+            cardSuite = "Hearts";
+            cardsHearts[value].setCardIsAlreadyPlayed();
         } else if (suite == 1) {
-            x = cardsSpades[value].checkIfCardIsPlayed();
-        } else if (suite ==2) {
-            x = cardsClubs[value].checkIfCardIsPlayed();
-        } else {
-            x = cardsDiamonds[value].checkIfCardIsPlayed();
+            cardSuite = "Spades";
+            cardsSpades[value].setCardIsAlreadyPlayed();
+        }else if (suite == 2) {
+            cardSuite = "Clubs";
+            cardsClubs[value].setCardIsAlreadyPlayed();
+        } else if (suite == 3) {
+            cardSuite = "Diamonds";
+            cardsDiamonds[value].setCardIsAlreadyPlayed();
         }
-        return x;
+
+        //Check what value and assign correct value to the string.
+        if (value == 0) {
+            cardValue = "2";
+        } else if (value == 1) {
+            cardValue = "3";
+        } else if (value == 2) {
+            cardValue = "4";
+        } else if (value == 3) {
+            cardValue = "5";
+        } else if (value == 4) {
+            cardValue = "6";
+        } else if (value == 5) {
+            cardValue = "7";
+        } else if (value == 6) {
+            cardValue = "8";
+        } else if (value == 7) {
+            cardValue = "9";
+        } else if (value == 8) {
+            cardValue = "10";
+        } else if (value == 9) {
+            cardValue = "Jack";
+        } else if (value == 10) {
+            cardValue = "Queen";
+        } else if (value == 11) {
+            cardValue = "King";
+        } else if (value == 12) {
+            cardValue = "Ace";
+        }
+     */
+
+    int randomSuite() {
+        return rand.nextInt(3);
     }
-
-    void newCardsOnTheTable() {
-        //Three on the table.
-        int aSuite = randomNumberSuite();
-        int aValue = randomNumberValue();
-        String aCard = "" + aSuite + " " + aValue;
-
-        int bSuite = randomNumberSuite();
-        int bValue = randomNumberValue();
-        String bCard = "" + bSuite + " " + bValue;
-
-        int cSuite = randomNumberSuite();
-        int cValue = randomNumberValue();
-        String cCard = "" + cSuite + " " + cValue;
-
-            if () {
-
-            } else if (!bCard.equals(cCard) && !aCard.equals(bCard) && !aCard.equals(cCard)) {
-                System.out.println();
-                System.out.println("On the table: ");
-                playedCards[0] = new Memory(""+aSuite, ""+aValue);
-                dealCard(aSuite, aValue);
-                playedCards[1] = new Memory(""+bSuite, ""+bValue);
-                dealCard(bSuite,bValue);
-                playedCards[2] = new Memory(""+cSuite, ""+cValue);
-                dealCard(cSuite,cValue);
-            }  else {
-                newCardsOnTheTable();
+    int randomValueOfCard() {
+        return rand.nextInt(12);
+    }
+    void randomNewCard(int randomSuite, int randomValue) {
+        checkIfCardIsAlreadyPlayed(randomSuite, randomValue);
+    }
+    void randomNewCard() {
+        randomNewCard(randomSuite(), randomValueOfCard());
+    }
+    void checkIfCardIsAlreadyPlayed(int suite, int value) {
+        if (suite == 0) {
+            if (cardsHearts[value].getIfCardIsAlreadyPlayed()) {
+                randomNewCard();
+            } else {
+                playCard(suite, value);
             }
-    }
-
-    void newPlayerCards() {
-        //Two cards to the player.
-        int aSuite = randomNumberSuite();
-        int aValue = randomNumberValue();
-        String aCard = "" + aSuite + " " + aValue;
-
-        int bSuite = randomNumberSuite();
-        int bValue = randomNumberValue();
-        String bCard = "" + bSuite + " " + bValue;
-
-        if (!aCard.equals(bCard)) {
-            System.out.println();
-            System.out.println("Player hand: ");
-            playedCards[3] = new Memory(""+aSuite, ""+aValue);
-            dealCard(aSuite, aValue);
-            playedCards[4] = new Memory(""+aSuite, ""+aValue);
-            dealCard(bSuite,bValue);
-        }  else {
-            newPlayerCards();
-        }
-    }
-
-    void newComputerCards() {
-        //Two cards to the player.
-        int aSuite = randomNumberSuite();
-        int aValue = randomNumberValue();
-        String aCard = "" + aSuite + " " + aValue;
-
-        int bSuite = randomNumberSuite();
-        int bValue = randomNumberValue();
-        String bCard = "" + bSuite + " " + bValue;
-
-        if (!aCard.equals(bCard)) {
-            System.out.println();
-            System.out.println("Opponents hand: ");
-            playedCards[5] = new Memory(""+aSuite, ""+aValue);
-            dealCard(aSuite, aValue);
-            playedCards[6] = new Memory(""+aSuite, ""+aValue);
-            dealCard(bSuite,bValue);
-        }  else {
-            newComputerCards();
-        }
-    }
-
-    int randomNumberSuite() {
-        int cardSuite = rand.nextInt(3);
-        return cardSuite;
-    }
-
-    int randomNumberValue() {
-        int cardValue = rand.nextInt(12);
-        return cardValue;
-    }
-
-    void dealCard(int suite, int value) {
-        if (suite == 0) {
-            cardsHearts[value].printCard();
-            cardsHearts[value].removeCardFromDeck();
         } else if (suite == 1) {
-            cardsSpades[value].printCard();
-            cardsSpades[value].removeCardFromDeck();
-        } else if (suite ==2) {
-            cardsClubs[value].printCard();
-            cardsClubs[value].removeCardFromDeck();
-        } else {
-            cardsDiamonds[value].printCard();
-            cardsDiamonds[value].removeCardFromDeck();
+            if (cardsSpades[value].getIfCardIsAlreadyPlayed()) {
+                randomNewCard();
+            } else {
+                playCard(suite, value);
+            }
+        } else if (suite == 2) {
+            if (cardsClubs[value].getIfCardIsAlreadyPlayed()) {
+                randomNewCard();
+            } else {
+                playCard(suite, value);
+            }
+        } else if (suite == 3) {
+            if (cardsDiamonds[value].getIfCardIsAlreadyPlayed()) {
+                randomNewCard();
+            } else {
+                playCard(suite, value);
+            }
         }
     }
-
-    void initiateNewDeck(String deckNumber) {
+    void playCard(int suite, int value) {
+        String cardSuite = "random";
+        String cardValue = "random";
+        if (suite == 0) {
+            System.out.println(cardsHearts[value].getSuiteAndValueOfCard());
+            cardsHearts[value].setCardIsAlreadyPlayed();
+            cardSuite = cardsHearts[value].getSuite();
+            cardValue = cardsHearts[value].getValueOfCard();
+        } else if (suite == 1) {
+            System.out.println(cardsSpades[value].getSuiteAndValueOfCard());
+            cardsSpades[value].setCardIsAlreadyPlayed();
+            cardSuite = cardsSpades[value].getSuite();
+            cardValue = cardsSpades[value].getValueOfCard();
+        } else if (suite == 2) {
+            System.out.println(cardsClubs[value].getSuiteAndValueOfCard());
+            cardsClubs[value].setCardIsAlreadyPlayed();
+            cardSuite = cardsClubs[value].getSuite();
+            cardValue = cardsClubs[value].getValueOfCard();
+        } else if (suite == 3) {
+            System.out.println(cardsDiamonds[value].getSuiteAndValueOfCard());
+            cardsDiamonds[value].setCardIsAlreadyPlayed();
+            cardSuite = cardsDiamonds[value].getSuite();
+            cardValue = cardsDiamonds[value].getValueOfCard();
+        }
+        playedCards[howManyCardsHaveBeenPlayed] = new Memory(cardSuite, cardValue);
+        howManyCardsHaveBeenPlayed = howManyCardsHaveBeenPlayed + 1;
+    }
+    void shuffleDeck() {
+        howManyCardsHaveBeenPlayed = 0;
+        //Sets value on every spot in the Arrays
+        for (int i = cardsHearts.length-1; i >= 0; i--) {
+            if (i == 9) {
+                cardsHearts[i].resetCard("Hearts", "Jack");
+                cardsSpades[i].resetCard("Spades", "Jack");
+                cardsClubs[i].resetCard("Clubs", "Jack");
+                cardsDiamonds[i].resetCard("Diamonds", "Jack");
+            } else if (i == 10) {
+                cardsHearts[i].resetCard("Hearts", "Queen");
+                cardsSpades[i].resetCard("Spades", "Queen");
+                cardsClubs[i].resetCard("Clubs", "Queen");
+                cardsDiamonds[i].resetCard("Diamonds", "Queen");
+            } else if (i == 11) {
+                cardsHearts[i].resetCard("Hearts", "King");
+                cardsSpades[i].resetCard("Spades", "King");
+                cardsClubs[i].resetCard("Clubs", "King");
+                cardsDiamonds[i].resetCard("Diamonds", "King");
+            } else if (i == 12) {
+                cardsHearts[i].resetCard("Hearts", "Ace");
+                cardsSpades[i].resetCard("Spades", "Ace");
+                cardsClubs[i].resetCard("Clubs", "Ace");
+                cardsDiamonds[i].resetCard("Diamonds", "Ace");
+            } else if (i == 13) {
+                cardsHearts[i].resetCard("Hearts", "Joker");
+                cardsSpades[i].resetCard("Spades", "Joker");
+                cardsClubs[i].resetCard("Clubs", "Joker");
+                cardsDiamonds[i].resetCard("Diamonds", "Joker");
+            } else {
+                cardsHearts[i].resetCard("Hearts", "" + (i+2));
+                cardsSpades[i].resetCard("Spades", "" + (i+2));
+                cardsClubs[i].resetCard("Clubs", "" + (i+2));
+                cardsDiamonds[i].resetCard("Diamonds", "" + (i+2));
+            }
+        }
+    }
+    void initiateNewDeck() {
         //Creates a deck of card. 14 of each suite.
         cardsHearts = new Hearts[14];
         cardsSpades = new Spades[14];
         cardsDiamonds = new Diamonds[14];
         cardsClubs = new Clubs[14];
+        playedCards = new Memory[14];
 
         //Sets value on every spot in the Arrays
         for (int i = cardsHearts.length-1; i >= 0; i--) {
-            if (i==9) {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "Jack");
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "Jack");
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "Jack");
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "Jack");
+            if (i == 9) {
+                cardsHearts[i] = new Hearts("Hearts", "Jack");
+                cardsSpades[i] = new Spades("Spades", "Jack");
+                cardsDiamonds[i] = new Diamonds("Diamonds", "Jack");
+                cardsClubs[i] = new Clubs("Clubs", "Jack");
             } else if (i == 10) {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "Queen");
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "Queen");
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "Queen");
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "Queen");
+                cardsHearts[i] = new Hearts("Hearts", "Queen");
+                cardsSpades[i] = new Spades( "Spades", "Queen");
+                cardsDiamonds[i] = new Diamonds( "Diamonds", "Queen");
+                cardsClubs[i] = new Clubs("Clubs", "Queen");
             } else if (i == 11) {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "King");
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "King");
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "King");
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "King");
+                cardsHearts[i] = new Hearts("Hearts", "King");
+                cardsSpades[i] = new Spades("Spades", "King");
+                cardsDiamonds[i] = new Diamonds("Diamonds", "King");
+                cardsClubs[i] = new Clubs("Clubs", "King");
             } else if (i == 12) {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "Ace");
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "Ace");
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "Ace");
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "Ace");
+                cardsHearts[i] = new Hearts("Hearts", "Ace");
+                cardsSpades[i] = new Spades( "Spades", "Ace");
+                cardsDiamonds[i] = new Diamonds("Diamonds", "Ace");
+                cardsClubs[i] = new Clubs("Clubs", "Ace");
             } else if (i == 13) {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "Joker");
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "Joker");
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "Joker");
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "Joker");
+                cardsHearts[i] = new Hearts("Hearts", "Joker");
+                cardsSpades[i] = new Spades("Spades", "Joker");
+                cardsDiamonds[i] = new Diamonds("Diamonds", "Joker");
+                cardsClubs[i] = new Clubs("Clubs", "Joker");
             } else {
-                cardsHearts[i] = new Hearts(deckNumber, "Hearts", "" + (i+2));
-                cardsSpades[i] = new Spades(deckNumber, "Spades", "" + (i+2));
-                cardsDiamonds[i] = new Diamonds(deckNumber, "Diamonds", "" + (i+2));
-                cardsClubs[i] = new Clubs(deckNumber, "Clubs", "" + (i+2));
+                cardsHearts[i] = new Hearts( "Hearts", "" + (i+2));
+                cardsSpades[i] = new Spades("Spades", "" + (i+2));
+                cardsDiamonds[i] = new Diamonds("Diamonds", "" + (i+2));
+                cardsClubs[i] = new Clubs("Clubs", "" + (i+2));
             }
         }
     }
+    void drawNewRound() {
+        System.out.println("On the table: ");
+        //Three for the playing board
+        randomNewCard();
+        randomNewCard();
+        randomNewCard();
+        System.out.println();
 
+        System.out.println("Two cards to the player");
+        //Two to player
+        randomNewCard();
+        randomNewCard();
+        System.out.println();
+
+        System.out.println("Two cards to the computer");
+        //Two to the computer
+        randomNewCard();
+        randomNewCard();
+        System.out.println();
+
+        System.out.println("One card to the trash");
+        // one for the discard
+        randomNewCard();
+        System.out.println();
+
+        System.out.println("One card to the playingboard");
+        //another card to the playing board
+        randomNewCard();
+
+        System.out.println("One card to the trash");
+        // one for the discard
+        randomNewCard();
+        System.out.println();
+
+        System.out.println("One card to the playingboard");
+        //another card to the playing board
+        randomNewCard();
+        System.out.println();
+        System.out.println("------------------round over.--------------");
+        System.out.println();
+    }
+    void printCardsPlayedFromDeck() {
+        for (int i=0; i<=10; i++) {
+            System.out.println(playedCards[i].getSuiteAndValueOfCard());
+        }
+    }
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Cardgame: Texas Holdem");
         System.out.println();
-        System.out.print("How many decks do you want to play with?: ");
-        String howManyDecks = scan.nextLine();
-
-        new Game(howManyDecks);
-
         System.out.println();
-        System.out.println("You have choosen to play texas holdem with: " + howManyDecks + " decks of cards. Lets start.");
 
+        new Game();
     }
 }

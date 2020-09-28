@@ -1,7 +1,9 @@
 package EG;
 
 public class Diamonds extends Card{
-    Diamonds(String deckNumber, String suite, String rankOfCard) {
-        super(deckNumber, suite, rankOfCard);
+
+    Diamonds(String suite, String valueOfCard) {
+        super(suite, valueOfCard);
     }
+
 }

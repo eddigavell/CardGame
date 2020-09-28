@@ -1,34 +1,39 @@
 package EG;
 
 abstract class  Card {
-    private String deckNumber;
     private String suite;
-    private String rankOfCard;
+    private String valueOfCard;
+    private boolean cardIsAlreadyPlayed;
 
-    Card(String deckNumber, String suite, String rankOfCard) {
-        this.deckNumber = deckNumber;
+    Card(String suite, String valueOfCard) {
         this.suite = suite;
-        this.rankOfCard = rankOfCard;
+        this.valueOfCard = valueOfCard;
+        this.cardIsAlreadyPlayed = false;
     }
 
-    protected String getDeckNumber() {
-        return this.deckNumber;
+    protected boolean getIfCardIsAlreadyPlayed() {
+        return this.cardIsAlreadyPlayed;
     }
 
     protected String getSuite(){
         return this.suite;
     }
 
-    protected String getRankOfCard() {
-        return this.rankOfCard;
+    protected String getValueOfCard() {
+        return this.valueOfCard;
     }
 
-    protected void printCard() {
-        System.out.println(getSuite() + " " + getRankOfCard());
+    protected String getSuiteAndValueOfCard() {
+        return getSuite() + " " + getValueOfCard();
     }
 
-    void removeCardFromDeck() {
-        this.suite = null;
-        this.rankOfCard = null;
+    protected void setCardIsAlreadyPlayed() {
+        this.cardIsAlreadyPlayed = true;
+    }
+
+    protected void resetCard(String suite, String valueOfCard) {
+        this.suite = suite;
+        this.valueOfCard = valueOfCard;
+        this.cardIsAlreadyPlayed = false;
     }
 }

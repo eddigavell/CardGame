@@ -1,7 +1,8 @@
 package EG;
 
-public class Hearts extends Card{
-    Hearts(String deckNumber, String suite, String rankOfCard) {
-        super(deckNumber, suite, rankOfCard);
+class Hearts extends Card{
+    Hearts(String suite, String valueOfCard) {
+        super(suite, valueOfCard);
     }
+
 }
